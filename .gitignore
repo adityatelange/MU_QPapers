@@ -1,0 +1,4 @@
+/.env
+/.data/error.log
+/.data/info.log
+**/.idea/**

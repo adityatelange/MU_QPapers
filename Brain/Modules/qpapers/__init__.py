@@ -8,6 +8,9 @@ from telegram.ext.dispatcher import run_async
 from Brain import Utils
 from Brain.Modules.qpapers import funcs
 from Brain.Modules.strings import *
+from Brain.Utils.dbfuncs import query_collect
+from Brain.Utils.dbfuncs import user_collect, unavailable_collect
+from Brain.Utils.user_info import get_user_info
 from server import logger
 
 qpapers_info_help = \
@@ -94,6 +97,15 @@ def qpapers_button(update, context):
                 pre = [course_in, branch_in, sem_in]
                 if len(subs) == 0:
                     word += '\n _Unavailable_ \U0001F615'
+                    query_log = {
+                        'level': 3,
+                        'course': course_full,
+                        'branch': branch_full,
+                        'semester': sem_in,
+                        'subject': "",
+                        'available': False
+                    }
+                    unavailable_collect(query_log)
                 else:
                     for sub in subs:
                         sub_ = ''.join(sub.split(' '))
@@ -130,9 +142,18 @@ def qpapers_button(update, context):
 
                 uri = funcs.link_getter(course_full, branch_full, sem_in)
                 subs, papers = funcs.get_subs_links(uri)
-
+                is_avail = False
                 if len(subs) == 0:
                     word = '\n _Unavailable_ \U0001F615'
+                    query_log = {
+                        'level': 4,
+                        'course': course_full,
+                        'branch': branch_full,
+                        'semester': sem_in,
+                        'subject': sub_in,
+                        'available': False
+                    }
+                    unavailable_collect(query_log)
                 else:
                     sub_index = None
                     for sub in subs:
@@ -153,12 +174,23 @@ def qpapers_button(update, context):
                                                  url=BASE_URL + url, ))
 
                     word = "Papers for \n`{}`".format(sub_in)
+                    is_avail = True
+
+                query_log = {
+                    'level': 4,
+                    'course': course_full,
+                    'branch': branch_full,
+                    'semester': sem_in,
+                    'subject': sub_in,
+                    'available': is_avail
+                }
+                query_collect(query_log)
 
                 # back_button data
                 back_data = "qa={}".format("+".join([course_in, branch_in, sem_in]))
             else:
                 colm = 1
-                word = "Some Unknown Error\n Contact [this person](t.me/@adityhere)"
+                word = "Some Unknown Error\n Contact [this person](t.me/@aditya_here)"
 
             # adding back button for easy traversing
             footer_button = [InlineKeyboardButton(text="[Back]", callback_data=back_data)]
@@ -197,6 +229,8 @@ def send_qpapers(update, text, keyboard=None):
 def get_qpapers(update, context):
     logger.info("into get_qpapers")
     chat = update.effective_chat
+
+    user_collect(get_user_info(update.effective_chat))
 
     context.bot.send_chat_action(chat_id=chat.id, action=ChatAction.TYPING)
     # ONLY send help in PM

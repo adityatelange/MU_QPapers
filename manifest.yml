@@ -1,0 +1,5 @@
+applications:
+  - path: .
+    name: mubot
+    random-route: true
+    memory: 128M

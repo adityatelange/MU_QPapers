@@ -3,10 +3,15 @@ from telegram.utils.helpers import escape_markdown
 
 from Brain.Modules.help import get_help
 from Brain.Modules.strings import logger, PM_START_TEXT, OWNER_ID
+from Brain.Utils.dbfuncs import user_collect
+from Brain.Utils.user_info import get_user_info
 
 
 def start(update, context):
     context.bot.send_chat_action(chat_id=update.effective_chat.id, action=ChatAction.TYPING)
+
+    user_collect(get_user_info(update.effective_chat))
+
     if update.effective_chat.type == "private":
         if len(context.args) >= 1:
             if context.args[0].lower() == "help":

@@ -76,6 +76,8 @@ def brancher(branch, course):
             uri = 'Zoology'
     elif course == 'BCOM':
         uri = ""
+    elif course == 'MCA':
+        uri = ""
     return uri
 
 
@@ -144,6 +146,9 @@ def link_getter(course, branch, sem):
         else:
             YR = 'FY'
         URI = YR + "BCOM" + sem + '.php'
+    elif course == "MCA":
+        sem = "Semester" + str(sem)
+        URI = course + sem + '.php'
     return URI
 
 

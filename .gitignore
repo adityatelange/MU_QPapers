@@ -1,0 +1,5 @@
+/.env
+/.data/error.log
+/.data/info.log
+**/.idea/**
+**/__pycache__/**

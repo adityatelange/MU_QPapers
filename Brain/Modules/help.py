@@ -7,6 +7,8 @@ from telegram.ext.dispatcher import run_async
 
 from Brain import Utils
 from Brain.Modules.strings import logger, HELPER_SCRIPTS, HELP_STRINGS
+from Brain.Utils.dbfuncs import user_collect
+from Brain.Utils.user_info import get_user_info
 
 
 @run_async
@@ -49,6 +51,8 @@ def send_help(update, text, keyboard=None):
 def get_help(update, context):
     logger.info("into get_help")
     chat = update.effective_chat
+
+    user_collect(get_user_info(update.effective_chat))
 
     context.bot.send_chat_action(chat_id=chat.id, action=ChatAction.TYPING)
 

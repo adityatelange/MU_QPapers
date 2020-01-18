@@ -62,7 +62,7 @@ def brancher(branch, course):
             uri = 'Biotech'
         elif branch == 'Botany':
             uri = 'Botany'
-        elif branch == 'CHEMISTRY':
+        elif branch == 'Chemistry':
             uri = 'Chemistry'
         elif branch == 'Computer Science (CS)':
             uri = 'CS'

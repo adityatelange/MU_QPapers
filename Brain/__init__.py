@@ -1,3 +1,5 @@
+import threading
+
 from telegram import ChatAction, ParseMode
 from telegram.utils.helpers import escape_markdown
 
@@ -10,7 +12,7 @@ from Brain.Utils.user_info import get_user_info
 def start(update, context):
     context.bot.send_chat_action(chat_id=update.effective_chat.id, action=ChatAction.TYPING)
 
-    user_collect(get_user_info(update.effective_chat))
+    threading.Thread(target=user_collect, args=(get_user_info(update.effective_chat),), daemon=True).start()
 
     if update.effective_chat.type == "private":
         if len(context.args) >= 1:

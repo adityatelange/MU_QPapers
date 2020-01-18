@@ -1,4 +1,5 @@
 import re
+import threading
 
 from telegram import ParseMode, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.chataction import ChatAction
@@ -52,7 +53,7 @@ def get_help(update, context):
     logger.info("into get_help")
     chat = update.effective_chat
 
-    user_collect(get_user_info(update.effective_chat))
+    threading.Thread(target=user_collect, args=(get_user_info(update.effective_chat),), daemon=True).start()
 
     context.bot.send_chat_action(chat_id=chat.id, action=ChatAction.TYPING)
 

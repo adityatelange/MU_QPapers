@@ -1,4 +1,5 @@
 import re
+import threading
 
 from telegram import ParseMode, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.chataction import ChatAction
@@ -105,7 +106,7 @@ def qpapers_button(update, context):
                         'subject': "",
                         'available': False
                     }
-                    unavailable_collect(query_log)
+                    threading.Thread(target=unavailable_collect, args=(query_log,), daemon=True).start()
                 else:
                     for sub in subs:
                         sub_ = ''.join(sub.split(' '))
@@ -153,7 +154,8 @@ def qpapers_button(update, context):
                         'subject': sub_in,
                         'available': False
                     }
-                    unavailable_collect(query_log)
+
+                    threading.Thread(target=unavailable_collect, args=(query_log,), daemon=True).start()
                 else:
                     sub_index = None
                     for sub in subs:
@@ -184,7 +186,7 @@ def qpapers_button(update, context):
                     'subject': sub_in,
                     'available': is_avail
                 }
-                query_collect(query_log)
+                threading.Thread(target=query_collect, args=(query_log,), daemon=True).start()
 
                 # back_button data
                 back_data = "qa={}".format("+".join([course_in, branch_in, sem_in]))
@@ -230,7 +232,7 @@ def get_qpapers(update, context):
     logger.info("into get_qpapers")
     chat = update.effective_chat
 
-    user_collect(get_user_info(update.effective_chat))
+    threading.Thread(target=user_collect, args=(get_user_info(update.effective_chat),), daemon=True).start()
 
     context.bot.send_chat_action(chat_id=chat.id, action=ChatAction.TYPING)
     # ONLY send help in PM

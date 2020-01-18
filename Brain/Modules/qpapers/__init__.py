@@ -7,7 +7,7 @@ from telegram.ext.dispatcher import run_async
 
 from Brain import Utils
 from Brain.Modules.qpapers import funcs
-from Brain.Modules.strings import *
+from Brain.Modules.strings import OWNER_ID, HELPER_SCRIPTS, COURSES_LIST, SEMS, BRANCHES_BE, BASE_URL
 from Brain.Utils.dbfuncs import query_collect
 from Brain.Utils.dbfuncs import user_collect, unavailable_collect
 from Brain.Utils.user_info import get_user_info
@@ -190,7 +190,7 @@ def qpapers_button(update, context):
                 back_data = "qa={}".format("+".join([course_in, branch_in, sem_in]))
             else:
                 colm = 1
-                word = "Some Unknown Error\n Contact [this person](t.me/***REMOVED***)"
+                word = "Some Unknown Error\n Contact [this person](tg://user?id={})".format(OWNER_ID)
 
             # adding back button for easy traversing
             footer_button = [InlineKeyboardButton(text="[Back]", callback_data=back_data)]

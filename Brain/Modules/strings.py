@@ -22,7 +22,7 @@ BASE_URL = "https://muquestionpapers.com/"
 COURSES_LIST = {'BE': 'be', 'ME': 'me', 'BSC': 'bs', "BCOM": 'bc', "MCA": 'mc'}
 # ----------------------------------------------------------------------------------------------------------------------
 
-BRANCHES_BE = {
+BRANCHES_COURSE = {
     "BE": {'Automobile': 'am',
            'Biomedical': 'bm',
            'Biotechnology': 'bt',

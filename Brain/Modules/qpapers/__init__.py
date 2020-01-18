@@ -8,7 +8,7 @@ from telegram.ext.dispatcher import run_async
 
 from Brain import Utils
 from Brain.Modules.qpapers import funcs
-from Brain.Modules.strings import OWNER_ID, HELPER_SCRIPTS, COURSES_LIST, SEMS, BRANCHES_BE, BASE_URL
+from Brain.Modules.strings import OWNER_ID, HELPER_SCRIPTS, COURSES_LIST, SEMS, BRANCHES_COURSE, BASE_URL
 from Brain.Utils.dbfuncs import query_collect
 from Brain.Utils.dbfuncs import user_collect, unavailable_collect
 from Brain.Utils.user_info import get_user_info
@@ -45,7 +45,7 @@ def qpapers_button(update, context):
                         course = module
                 word = """Selected Course: `{}` \nSelect Branch :""".format(course)
 
-                for branch, branch_code in BRANCHES_BE[course].items():
+                for branch, branch_code in BRANCHES_COURSE[course].items():
                     branch_full = branch
                     nextt = [course_in, branch_code]
                     button_list.append(
@@ -60,7 +60,7 @@ def qpapers_button(update, context):
                     if course_in == tag:
                         course_full = module
                         break
-                for branchy, key in BRANCHES_BE[course_full].items():
+                for branchy, key in BRANCHES_COURSE[course_full].items():
                     if branch_in == key:
                         branch_full = branchy
                         break
@@ -84,7 +84,7 @@ def qpapers_button(update, context):
                     if course_in == tag:
                         course_full = module
                         break
-                for branch, key in BRANCHES_BE[course_full].items():
+                for branch, key in BRANCHES_COURSE[course_full].items():
                     if branch_in == key:
                         branch_full = branch
                         break
@@ -136,7 +136,7 @@ def qpapers_button(update, context):
                     if course_in == tag:
                         course_full = module
                         break
-                for branch, key in BRANCHES_BE[course_full].items():
+                for branch, key in BRANCHES_COURSE[course_full].items():
                     if branch_in == key:
                         branch_full = branch
                         break

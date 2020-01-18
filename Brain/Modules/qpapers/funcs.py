@@ -56,23 +56,23 @@ def brancher(branch, course):
         elif branch == 'Thermal Engineering':
             uri = 'Thermal'
     elif course == 'BSC':
-        if branch == 'BIOCHEMISTRY':
+        if branch == 'Biochemistry':
             uri = 'Biochemistry'
-        elif branch == 'BIOTECHNOLOGY':
+        elif branch == 'Biotechnology':
             uri = 'Biotech'
-        elif branch == 'BOTANY':
+        elif branch == 'Botany':
             uri = 'Botany'
         elif branch == 'CHEMISTRY':
             uri = 'Chemistry'
-        elif branch == 'COMPUTER SCIENCE (CS)':
+        elif branch == 'Computer Science (CS)':
             uri = 'CS'
-        elif branch == 'INFORMATION TECHNOLOGY':
+        elif branch == 'Information Technology':
             uri = 'IT'
-        elif branch == 'MATHEMATICS':
+        elif branch == 'Mathematics':
             uri = 'Mathematics'
-        elif branch == 'PHYSICS':
+        elif branch == 'Physics':
             uri = 'Physics'
-        elif branch == 'ZOOLOGY':
+        elif branch == 'Zoology':
             uri = 'Zoology'
     elif course == 'BCOM':
         uri = ""

@@ -4,8 +4,11 @@
 
 
 
-Python-3 Based Telegram bot:
+### Python-3 Based Telegram bot:
 
-	- was developed to get Question Papers easily. 
+    - was developed to get Question Papers easily. 
     - uses muquestionpapers.com to get papers "unofficially". Thanks to them !
     - no endorsements and promotions.
+
+### Screenshots
+<img height=500 src="https://i.ibb.co/j6THZYT/IMG-20200118-082018.jpg">   <img height=500 src="https://i.ibb.co/JRK1tbN/IMG-20200118-082136.jpg">

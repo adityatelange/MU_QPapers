@@ -8,6 +8,7 @@ from Brain.Modules.strings import logger
 import Brain
 import Brain.Modules.help
 import Brain.Modules.qpapers
+import Brain.Modules.stats
 from Brain.Utils.logger import initialize_logger
 
 
@@ -35,6 +36,7 @@ class Main:
         start_handler = CommandHandler(command="start", callback=Brain.start, pass_args=True)
         help_handler = CommandHandler(command="help", callback=Brain.Modules.help.get_help, pass_args=True)
         qpapers_handler = CommandHandler(command="qpapers", callback=Brain.Modules.qpapers.get_qpapers)
+        stats_handler = CommandHandler(command="stats", callback=Brain.Modules.stats.get_stats)
 
         # callback handlers
         help_callback_handler = CallbackQueryHandler(callback=Brain.Modules.help.help_button, pattern=r"help_", )
@@ -43,6 +45,7 @@ class Main:
         # set dispatchers
         self.dispatcher.add_handler(start_handler)
         self.dispatcher.add_handler(help_handler)
+        self.dispatcher.add_handler(stats_handler)
         self.dispatcher.add_handler(help_callback_handler)
         self.dispatcher.add_handler(qpapers_handler)
         self.dispatcher.add_handler(qpapers_callback_handler)

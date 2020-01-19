@@ -44,3 +44,13 @@ def unavailable_collect(query_as_dict):
     unavailables = db().unavailables
     res = unavailables.insert_one(query_as_dict)
     logger.info("[+] Unavailable collect {}{}".format(res, query_as_dict))
+
+
+def get_stats_from_db():
+    users = db().users.find().count()
+    queries = db().queries.find().count()
+    stats = {
+        'user_count': users,
+        'queries_count': queries
+    }
+    return stats

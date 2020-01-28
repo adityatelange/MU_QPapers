@@ -124,6 +124,7 @@ def link_getter(course, branch, sem):
             branch = brancher(branch, course)
         URI = YR + branch + sem + '.php'
     elif course == 'ME':
+        sem = 'Sem' + str(sem)
         branch = brancher(branch, course)
         URI = course + branch + sem + '.php'
     elif course == 'BSC':

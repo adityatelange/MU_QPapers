@@ -5,7 +5,7 @@ logger = logging.getLogger(__name__)
 OWNER_ID = os.getenv("OWNER_ID")
 # ----------------------------------------------------------------------------------------------------------------------
 PM_START_TEXT = """Hello {}, my name is {}! If you have any questions on how to use me, read /help.
-I'm a MU Student Assistant bot maintained by [this person](tg://user?id={}) ."""
+I'm a MU Student Assistant bot ."""
 # ----------------------------------------------------------------------------------------------------------------------
 
 HELP_STRINGS = """*Main* commands available:

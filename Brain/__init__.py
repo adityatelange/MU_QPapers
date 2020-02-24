@@ -4,7 +4,7 @@ from telegram import ChatAction, ParseMode
 from telegram.utils.helpers import escape_markdown
 
 from Brain.Modules.help import get_help
-from Brain.Modules.strings import logger, PM_START_TEXT, OWNER_ID
+from Brain.Modules.strings import logger, PM_START_TEXT
 from Brain.Utils.dbfuncs import user_collect
 from Brain.Utils.user_info import get_user_info
 
@@ -23,7 +23,7 @@ def start(update, context):
             reply = PM_START_TEXT.format(
                 escape_markdown(first_name),
                 escape_markdown(context.bot.first_name),
-                escape_markdown(OWNER_ID))
+            )
             update.effective_message.reply_text(
                 reply,
                 parse_mode=ParseMode.MARKDOWN)

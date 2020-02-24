@@ -40,6 +40,16 @@ def query_collect(query_as_dict):
     logger.info("[+] Query collect {}{}".format(res, query_as_dict))
 
 
+def feedback_collect(user, feedback_str):
+    feedback = db().feedback
+    feedback_obj = {
+        'user': user,
+        'feedback': feedback_str
+    }
+    res = feedback.insert_one(feedback_obj)
+    logger.info("[+] Feedback collect {}{}".format(res, feedback_str))
+
+
 def unavailable_collect(query_as_dict):
     unavailables = db().unavailables
     res = unavailables.insert_one(query_as_dict)

@@ -76,6 +76,14 @@ def brancher(branch, course):
             uri = 'Zoology'
     elif course == 'BCOM':
         uri = ""
+    elif course == 'BAF':
+        uri = ""
+    elif course == 'BBI':
+        uri = ""
+    elif course == 'BFM':
+        uri = ""
+    elif course == 'BMS':
+        uri = ""
     elif course == 'MCA':
         uri = ""
     return uri
@@ -147,6 +155,42 @@ def link_getter(course, branch, sem):
         else:
             YR = 'FY'
         URI = YR + "BCOM" + sem + '.php'
+    elif course == 'BAF':
+        sem = "Sem" + str(sem)
+        if sem == 'Sem3' or sem == 'Sem4':
+            YR = 'SY'
+        elif sem == 'Sem5' or sem == 'Sem6':
+            YR = 'TY'
+        else:
+            YR = 'FY'
+        URI = YR + "BAF" + sem + '.php'
+    elif course == 'BBI':
+        sem = "Sem" + str(sem)
+        if sem == 'Sem3' or sem == 'Sem4':
+            YR = 'SY'
+        elif sem == 'Sem5' or sem == 'Sem6':
+            YR = 'TY'
+        else:
+            YR = 'FY'
+        URI = YR + "BBI" + sem + '.php'
+    elif course == 'BFM':
+        sem = "Sem" + str(sem)
+        if sem == 'Sem3' or sem == 'Sem4':
+            YR = 'SY'
+        elif sem == 'Sem5' or sem == 'Sem6':
+            YR = 'TY'
+        else:
+            YR = 'FY'
+        URI = YR + "BFM" + sem + '.php'
+    elif course == 'BMS':
+        sem = "Sem" + str(sem)
+        if sem == 'Sem3' or sem == 'Sem4':
+            YR = 'SY'
+        elif sem == 'Sem5' or sem == 'Sem6':
+            YR = 'TY'
+        else:
+            YR = 'FY'
+        URI = YR + "BMS" + sem + '.php'
     elif course == "MCA":
         sem = "Semester" + str(sem)
         URI = course + sem + '.php'

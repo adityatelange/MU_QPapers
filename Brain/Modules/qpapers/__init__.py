@@ -254,7 +254,7 @@ def get_qpapers(update, context):
                 InlineKeyboardButton(text=text,
                                      callback_data=callback_data, ))
 
-        reply_markup_keyboard = InlineKeyboardMarkup(Utils.build_menu(button_list, n_cols=1))
+        reply_markup_keyboard = InlineKeyboardMarkup(Utils.build_menu(button_list, n_cols=2))
 
         send_qpapers(
             update=update,

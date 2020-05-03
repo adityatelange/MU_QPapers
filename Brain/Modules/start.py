@@ -4,9 +4,11 @@ from telegram import ChatAction, ParseMode
 from telegram.utils.helpers import escape_markdown
 
 from Brain.Modules.help import get_help
-from Brain.Utils.strings import PM_START_TEXT
 from Brain.Utils.dbfuncs import user_collect
 from Brain.Utils.user_info import get_user_info
+
+PM_START_TEXT = """Hello {}, my name is {}! If you have any questions on how to use me, read /help.
+I'm a MU Student Assistant bot ."""
 
 
 def start(update, context):

@@ -91,8 +91,8 @@ def qpapers_button(update, context):
                 word = """Selected Course: `{}` \nSelected Branch: `{}` \nSelected Sem: `{}` \nSelect Subject :""". \
                     format(course_full, branch_full, sem_in)
 
-                uri = qpaper_utils.link_getter(course_full, branch_full, sem_in)
-                subs, papers = qpaper_utils.get_subs_links(uri)
+                uri = qpaper_utils.generate_uri(course_full, branch_full, sem_in)
+                subs, papers = qpaper_utils.fetch_links_from_url(uri)
 
                 pre = [course_in, branch_in, sem_in]
                 if len(subs) == 0:
@@ -140,8 +140,8 @@ def qpapers_button(update, context):
                         branch_full = branch
                         break
 
-                uri = qpaper_utils.link_getter(course_full, branch_full, sem_in)
-                subs, papers = qpaper_utils.get_subs_links(uri)
+                uri = qpaper_utils.generate_uri(course_full, branch_full, sem_in)
+                subs, papers = qpaper_utils.fetch_links_from_url(uri)
                 is_avail = False
                 if len(subs) == 0:
                     word = '\n _Unavailable_ \U0001F615'

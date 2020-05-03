@@ -3,7 +3,7 @@ import threading
 from telegram.ext import (CommandHandler, Updater, CallbackQueryHandler)
 import os
 import sys
-from Brain.Modules.strings import logger
+from Brain.Utils.strings import logger
 
 import Brain.Modules.start
 import Brain.Modules.help

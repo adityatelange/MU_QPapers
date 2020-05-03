@@ -3,7 +3,7 @@ import sys
 
 import pymongo
 
-from Brain.Modules.strings import logger
+from Brain.Utils.strings import logger
 
 
 def db():

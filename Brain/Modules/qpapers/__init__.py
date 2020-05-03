@@ -8,7 +8,7 @@ from telegram.ext.dispatcher import run_async
 
 from Brain.Utils import button_menu
 from Brain.Modules.qpapers import funcs
-from Brain.Modules.strings import HELPER_SCRIPTS, COURSES_LIST, SEMS, BRANCHES_COURSE, BASE_URL
+from Brain.Utils.strings import HELPER_SCRIPTS, COURSES_LIST, SEMS, BRANCHES_COURSE, BASE_URL
 from Brain.Utils.dbfuncs import query_collect
 from Brain.Utils.dbfuncs import user_collect, unavailable_collect
 from Brain.Utils.user_info import get_user_info

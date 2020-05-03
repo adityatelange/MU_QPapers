@@ -7,7 +7,7 @@ from telegram.error import BadRequest
 from telegram.ext.dispatcher import run_async
 
 from Brain.Utils import button_menu
-from Brain.Modules.strings import logger, HELPER_SCRIPTS, HELP_STRINGS
+from Brain.Utils.strings import logger, HELPER_SCRIPTS, HELP_STRINGS
 from Brain.Utils.dbfuncs import user_collect
 from Brain.Utils.user_info import get_user_info
 

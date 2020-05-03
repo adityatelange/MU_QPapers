@@ -2,7 +2,7 @@ import bs4
 import cfscrape
 from requests import get
 
-from Brain.Modules.strings import *
+from Brain.Utils.strings import *
 
 
 def brancher(branch, course):

@@ -4,7 +4,7 @@ from telegram import ChatAction, ParseMode
 from telegram.utils.helpers import escape_markdown
 
 from Brain.Modules.help import get_help
-from Brain.Modules.strings import logger, PM_START_TEXT
+from Brain.Utils.strings import PM_START_TEXT
 from Brain.Utils.dbfuncs import user_collect
 from Brain.Utils.user_info import get_user_info
 

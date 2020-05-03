@@ -5,7 +5,7 @@ from telegram.chataction import ChatAction
 from telegram.ext.dispatcher import run_async
 
 from Brain.Modules.help import get_help
-from Brain.Modules.strings import HELPER_SCRIPTS
+from Brain.Utils.strings import HELPER_SCRIPTS
 from Brain.Utils.dbfuncs import user_collect, feedback_collect
 from Brain.Utils.user_info import get_user_info
 from server import logger

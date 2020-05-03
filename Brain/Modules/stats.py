@@ -4,7 +4,7 @@ from telegram import ParseMode, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.chataction import ChatAction
 from telegram.ext.dispatcher import run_async
 
-from Brain.Modules.strings import logger
+from Brain.Utils.strings import logger
 from Brain.Utils.dbfuncs import user_collect, get_stats_from_db
 from Brain.Utils.user_info import get_user_info
 

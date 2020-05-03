@@ -183,26 +183,3 @@ def link_getter(course, branch, sem):
         sem = "Semester" + str(sem)
         URI = course + sem + '.php'
     return URI
-
-
-def send_file_qpapers(bot, update, url):
-    # unused
-
-    chat_id = update.effective_chat.id
-    file_name = url.split('/')[-1]
-    base = ".data/"
-
-    with open(base + file_name, "wb") as file:
-        try:
-            # get request
-            response = get(url)
-            # write to file
-            file.write(response.content)
-
-        except ConnectionError as ce:
-            print(ce)
-        except OSError as oe:
-            print(oe)
-
-    bot.send_document(chat_id=chat_id, document=open(base + file_name, 'rb'))
-    return file_name

@@ -69,8 +69,8 @@ def qpapers_button(update, context):
                 word = """Selected Course: `{}` \nSelected Branch: `{}` \nSelect Sem :""". \
                     format(course_full, branch_full)
 
-                for sem in SEMS[course_full]:
-                    nextt = [course_in, branch_in, sem]
+                for sem in range(1, SEMS[course_full] + 1):
+                    nextt = [course_in, branch_in, str(sem)]
                     button_list.append(
                         InlineKeyboardButton(
                             text="{}".format(sem),

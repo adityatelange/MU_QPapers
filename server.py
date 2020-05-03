@@ -5,7 +5,7 @@ import os
 import sys
 from Brain.Modules.strings import logger
 
-import Brain
+import Brain.Modules.start
 import Brain.Modules.help
 import Brain.Modules.qpapers
 import Brain.Modules.stats
@@ -34,7 +34,7 @@ class Main:
 
     def handlers(self):
         # simple handlers
-        start_handler = CommandHandler(command="start", callback=Brain.start, pass_args=True)
+        start_handler = CommandHandler(command="start", callback=Brain.Modules.start, pass_args=True)
         help_handler = CommandHandler(command="help", callback=Brain.Modules.help.get_help, pass_args=True)
         qpapers_handler = CommandHandler(command="qpapers", callback=Brain.Modules.qpapers.get_qpapers)
         stats_handler = CommandHandler(command="stats", callback=Brain.Modules.stats.get_stats)

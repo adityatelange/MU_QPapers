@@ -6,7 +6,7 @@ from telegram.chataction import ChatAction
 from telegram.error import BadRequest
 from telegram.ext.dispatcher import run_async
 
-from Brain import Utils
+from Brain.Utils import button_menu
 from Brain.Modules.qpapers import funcs
 from Brain.Modules.strings import HELPER_SCRIPTS, COURSES_LIST, SEMS, BRANCHES_COURSE, BASE_URL
 from Brain.Utils.dbfuncs import query_collect
@@ -197,7 +197,7 @@ def qpapers_button(update, context):
             # adding back button for easy traversing
             footer_button = [InlineKeyboardButton(text="[Back]", callback_data=back_data)]
 
-            reply_markup_keyboard = InlineKeyboardMarkup(Utils.build_menu(button_list,
+            reply_markup_keyboard = InlineKeyboardMarkup(button_menu.build_menu(button_list,
                                                                           n_cols=colm,
                                                                           footer_buttons=footer_button))
             send_qpapers(update, text=word, keyboard=reply_markup_keyboard)
@@ -254,7 +254,7 @@ def get_qpapers(update, context):
                 InlineKeyboardButton(text=text,
                                      callback_data=callback_data, ))
 
-        reply_markup_keyboard = InlineKeyboardMarkup(Utils.build_menu(button_list, n_cols=2))
+        reply_markup_keyboard = InlineKeyboardMarkup(button_menu.build_menu(button_list, n_cols=2))
 
         send_qpapers(
             update=update,

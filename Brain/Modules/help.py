@@ -6,7 +6,7 @@ from telegram.chataction import ChatAction
 from telegram.error import BadRequest
 from telegram.ext.dispatcher import run_async
 
-from Brain import Utils
+from Brain.Utils import button_menu
 from Brain.Modules.strings import logger, HELPER_SCRIPTS, HELP_STRINGS
 from Brain.Utils.dbfuncs import user_collect
 from Brain.Utils.user_info import get_user_info
@@ -77,7 +77,7 @@ def get_help(update, context):
                 InlineKeyboardButton(text="/{}".format(module),
                                      callback_data="help_action={}".format(module), ))
 
-        reply_markup_keyboard = InlineKeyboardMarkup(Utils.build_menu(button_list, n_cols=2))
+        reply_markup_keyboard = InlineKeyboardMarkup(button_menu.build_menu(button_list, n_cols=2))
 
         send_help(
             update=update,

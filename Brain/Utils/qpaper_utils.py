@@ -180,3 +180,8 @@ def fetch_links_from_url(uri):
         papers_all.append(papers)
 
     return subjects_all, papers_all
+
+
+def collect_subs_n_papers(course, branch, sem):
+    url = generate_uri(course, branch, sem)
+    return fetch_links_from_url(url)

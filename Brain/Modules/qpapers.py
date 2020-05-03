@@ -52,6 +52,7 @@ def qpapers_button(update, context):
                                              callback_data="qa={}".format("+".join(nextt)), ))
 
             elif len(text) == 2:
+                # course, branch selected => select sem
                 colm = 2
                 course_full = branch_full = ''
                 course_in, branch_in = text
@@ -76,6 +77,7 @@ def qpapers_button(update, context):
                 back_data = "qa={}".format("+".join([course_in]))
 
             elif len(text) == 3:
+                # course, branch, sem selected => select subject
                 colm = 1
                 course_full = branch_full = ''
                 course_in, branch_in, sem_in = text
@@ -91,8 +93,8 @@ def qpapers_button(update, context):
                 word = """Selected Course: `{}` \nSelected Branch: `{}` \nSelected Sem: `{}` \nSelect Subject :""". \
                     format(course_full, branch_full, sem_in)
 
-                uri = qpaper_utils.generate_uri(course_full, branch_full, sem_in)
-                subs, papers = qpaper_utils.fetch_links_from_url(uri)
+                # we don't use 'papers' here just use subs
+                subs, papers = qpaper_utils.collect_subs_n_papers(course_full, branch_full, sem_in)
 
                 pre = [course_in, branch_in, sem_in]
                 if len(subs) == 0:
@@ -125,8 +127,7 @@ def qpapers_button(update, context):
                 back_data = "qa={}".format("+".join([course_in, branch_in]))
 
             elif len(text) == 4:
-
-                # send the links here
+                # course, branch, sem, subject selected => send the links here
                 colm = 1
                 course_in, branch_in, sem_in, sub_in = text
                 course_full = branch_full = ''
@@ -140,8 +141,7 @@ def qpapers_button(update, context):
                         branch_full = branch
                         break
 
-                uri = qpaper_utils.generate_uri(course_full, branch_full, sem_in)
-                subs, papers = qpaper_utils.fetch_links_from_url(uri)
+                subs, papers = qpaper_utils.collect_subs_n_papers(course_full, branch_full, sem_in)
                 is_avail = False
                 if len(subs) == 0:
                     word = '\n _Unavailable_ \U0001F615'
@@ -167,7 +167,7 @@ def qpapers_button(update, context):
                         if re.sub('\s+', '', format_callback_sub) == re.sub('\s+', '', sub_in):
                             sub_index = subs.index(sub)
                             break
-                    # send_qpapers(update, text="Books sent", keyboard=None)
+
                     papers_for_sub = papers[sub_index].items()
                     for name, url in papers_for_sub:
                         button_list.append(

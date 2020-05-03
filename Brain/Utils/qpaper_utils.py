@@ -6,7 +6,7 @@ from Brain.Utils.strings import *
 
 
 def brancher(branch, course):
-    uri = ""
+    uri = ""  # for courses which doesn't have a branch ['BCOM', 'BAF', 'BBI', 'BFM', 'BMS', 'MCA']
     if course == 'BE':
         if branch == 'Automobile':
             uri = 'Automobile'
@@ -74,18 +74,6 @@ def brancher(branch, course):
             uri = 'Physics'
         elif branch == 'Zoology':
             uri = 'Zoology'
-    elif course == 'BCOM':
-        uri = ""
-    elif course == 'BAF':
-        uri = ""
-    elif course == 'BBI':
-        uri = ""
-    elif course == 'BFM':
-        uri = ""
-    elif course == 'BMS':
-        uri = ""
-    elif course == 'MCA':
-        uri = ""
     return uri
 
 

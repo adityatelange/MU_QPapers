@@ -6,8 +6,7 @@ from telegram.chataction import ChatAction
 from telegram.error import BadRequest
 from telegram.ext.dispatcher import run_async
 
-from Brain.Utils import button_menu
-from Brain.Modules.qpapers import funcs
+from Brain.Utils import button_menu, qpaper_utils
 from Brain.Utils.strings import HELPER_SCRIPTS, COURSES_LIST, SEMS, BRANCHES_COURSE, BASE_URL
 from Brain.Utils.dbfuncs import query_collect
 from Brain.Utils.dbfuncs import user_collect, unavailable_collect
@@ -92,8 +91,8 @@ def qpapers_button(update, context):
                 word = """Selected Course: `{}` \nSelected Branch: `{}` \nSelected Sem: `{}` \nSelect Subject :""". \
                     format(course_full, branch_full, sem_in)
 
-                uri = funcs.link_getter(course_full, branch_full, sem_in)
-                subs, papers = funcs.get_subs_links(uri)
+                uri = qpaper_utils.link_getter(course_full, branch_full, sem_in)
+                subs, papers = qpaper_utils.get_subs_links(uri)
 
                 pre = [course_in, branch_in, sem_in]
                 if len(subs) == 0:
@@ -141,8 +140,8 @@ def qpapers_button(update, context):
                         branch_full = branch
                         break
 
-                uri = funcs.link_getter(course_full, branch_full, sem_in)
-                subs, papers = funcs.get_subs_links(uri)
+                uri = qpaper_utils.link_getter(course_full, branch_full, sem_in)
+                subs, papers = qpaper_utils.get_subs_links(uri)
                 is_avail = False
                 if len(subs) == 0:
                     word = '\n _Unavailable_ \U0001F615'

@@ -4,8 +4,8 @@ from telegram import ParseMode, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.chataction import ChatAction
 from telegram.ext.dispatcher import run_async
 
-from Brain.Utils.strings import logger
 from Brain.Utils.dbfuncs import user_collect, get_stats_from_db
+from Brain.Utils.strings import logger
 from Brain.Utils.user_info import get_user_info
 
 
@@ -27,10 +27,17 @@ def get_stats(update, context):
     context.bot.send_chat_action(chat_id=chat.id, action=ChatAction.TYPING)
     # ONLY send stats in PM
     if chat.type != chat.PRIVATE:
-        send_stats(update, "Contact me in PM to get the list of possible commands.", InlineKeyboardMarkup(
-            [[InlineKeyboardButton(text="Help",
-                                   url="t.me/{}?start=help".format(
-                                       context.bot.username))]]))
+        send_stats(
+            update,
+            "Contact me in PM to get the list of possible commands.",
+            InlineKeyboardMarkup(
+                [[
+                    InlineKeyboardButton(
+                        text="Help",
+                        url="t.me/{}?start=help".format(context.bot.username))
+                ]]
+            )
+        )
         return
 
     else:
@@ -39,5 +46,5 @@ def get_stats(update, context):
             format(
                 stats['user_count'],
                 stats['queries_count']
-            )
+        )
         send_stats(update=update, text=text, )

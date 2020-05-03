@@ -7,8 +7,8 @@ from telegram.error import BadRequest
 from telegram.ext.dispatcher import run_async
 
 from Brain.Utils import button_menu
-from Brain.Utils.strings import logger, HELPER_SCRIPTS
 from Brain.Utils.dbfuncs import user_collect
+from Brain.Utils.strings import logger, HELPER_SCRIPTS
 from Brain.Utils.user_info import get_user_info
 
 HELP_STRINGS = \
@@ -66,23 +66,38 @@ def get_help(update, context):
 
     # ONLY send help in PM
     if chat.type != chat.PRIVATE:
-        send_help(update, "Contact me in PM to get the list of possible commands.", InlineKeyboardMarkup(
-            [[InlineKeyboardButton(text="Help",
-                                   url="t.me/{}?start=help".format(
-                                       context.bot.username))]]))
+        send_help(
+            update,
+            "Contact me in PM to get the list of possible commands.",
+            InlineKeyboardMarkup(
+                [[
+                    InlineKeyboardButton(text="Help",
+                                         url="t.me/{}?start=help".format(
+                                             context.bot.username))
+                ]]
+            )
+        )
         return
     elif len(context.args) >= 1 and any(context.args[0].lower() == x for x in HELPER_SCRIPTS):
         module = context.args[0].lower()
-        text = "Here is the available help for the *{}* module:\n".format(module) \
-               + HELPER_SCRIPTS[module]
-        send_help(update, text, InlineKeyboardMarkup([[InlineKeyboardButton(text="Back", callback_data="help_back")]]))
+        text = "Here is the available help for the *{}* module:\n".format(module) + HELPER_SCRIPTS[module]
+        send_help(
+            update,
+            text,
+            InlineKeyboardMarkup(
+                [[InlineKeyboardButton(text="Back", callback_data="help_back")]]
+            )
+        )
 
     else:
         button_list = []
         for module in HELPER_SCRIPTS:
             button_list.append(
-                InlineKeyboardButton(text="/{}".format(module),
-                                     callback_data="help_action={}".format(module), ))
+                InlineKeyboardButton(
+                    text="/{}".format(module),
+                    callback_data="help_action={}".format(module),
+                )
+            )
 
         reply_markup_keyboard = InlineKeyboardMarkup(button_menu.build_menu(button_list, n_cols=2))
 

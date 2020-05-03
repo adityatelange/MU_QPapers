@@ -7,9 +7,9 @@ from telegram.error import BadRequest
 from telegram.ext.dispatcher import run_async
 
 from Brain.Utils import button_menu, qpaper_utils
-from Brain.Utils.strings import HELPER_SCRIPTS, COURSES_LIST, SEMS, BRANCHES_COURSE, BASE_URL
 from Brain.Utils.dbfuncs import query_collect
 from Brain.Utils.dbfuncs import user_collect, unavailable_collect
+from Brain.Utils.strings import HELPER_SCRIPTS, COURSES_LIST, SEMS, BRANCHES_COURSE, BASE_URL
 from Brain.Utils.user_info import get_user_info
 from server import logger
 
@@ -48,8 +48,10 @@ def qpapers_button(update, context):
                     branch_full = branch
                     nextt = [course_in, branch_code]
                     button_list.append(
-                        InlineKeyboardButton(text="{}".format(branch_full),
-                                             callback_data="qa={}".format("+".join(nextt)), ))
+                        InlineKeyboardButton(
+                            text="{}".format(branch_full),
+                            callback_data="qa={}".format("+".join(nextt)), )
+                    )
 
             elif len(text) == 2:
                 # course, branch selected => select sem
@@ -70,8 +72,11 @@ def qpapers_button(update, context):
                 for sem in SEMS[course_full]:
                     nextt = [course_in, branch_in, sem]
                     button_list.append(
-                        InlineKeyboardButton(text="{}".format(sem),
-                                             callback_data="qa={}".format("+".join(nextt)), ))
+                        InlineKeyboardButton(
+                            text="{}".format(sem),
+                            callback_data="qa={}".format("+".join(nextt)),
+                        )
+                    )
 
                 # back_button data
                 back_data = "qa={}".format("+".join([course_in]))
@@ -120,8 +125,11 @@ def qpapers_button(update, context):
                             logger.info("serialized to =>" + callback_str)
 
                         button_list.append(
-                            InlineKeyboardButton(text="{}".format(sub),
-                                                 callback_data=callback_str, ))
+                            InlineKeyboardButton(
+                                text="{}".format(sub),
+                                callback_data=callback_str,
+                            )
+                        )
 
                 # back_button data
                 back_data = "qa={}".format("+".join([course_in, branch_in]))
@@ -171,8 +179,11 @@ def qpapers_button(update, context):
                     papers_for_sub = papers[sub_index].items()
                     for name, url in papers_for_sub:
                         button_list.append(
-                            InlineKeyboardButton(text="{}".format(name),
-                                                 url=BASE_URL + url, ))
+                            InlineKeyboardButton(
+                                text="{}".format(name),
+                                url=BASE_URL + url,
+                            )
+                        )
 
                     word = "Papers for \n`{}`".format(sub_in)
                     is_avail = True
@@ -196,9 +207,13 @@ def qpapers_button(update, context):
             # adding back button for easy traversing
             footer_button = [InlineKeyboardButton(text="[Back]", callback_data=back_data)]
 
-            reply_markup_keyboard = InlineKeyboardMarkup(button_menu.build_menu(button_list,
-                                                                          n_cols=colm,
-                                                                          footer_buttons=footer_button))
+            reply_markup_keyboard = InlineKeyboardMarkup(
+                button_menu.build_menu(
+                    button_list,
+                    n_cols=colm,
+                    footer_buttons=footer_button
+                )
+            )
             send_qpapers(update, text=word, keyboard=reply_markup_keyboard)
 
         elif back_button_match:

@@ -28,7 +28,8 @@ def start(update, context):
             )
             update.effective_message.reply_text(
                 reply,
-                parse_mode=ParseMode.MARKDOWN)
+                parse_mode=ParseMode.MARKDOWN
+            )
 
     else:
         update.effective_message.reply_text("Hey, {}!".format(escape_markdown(update.effective_user.first_name)))

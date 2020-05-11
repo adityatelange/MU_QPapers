@@ -83,6 +83,7 @@ def generate_uri(course, branch, sem):
     if course == 'BE':
         sem = 'Sem' + str(sem)
         if sem == 'Sem1' or sem == 'Sem2':
+            branch = ""
             YR = 'FE'
         else:
             if sem == 'Sem3' or sem == 'Sem4':

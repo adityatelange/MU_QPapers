@@ -4,7 +4,11 @@ import sys
 import pymongo
 
 from Brain.Utils.strings import logger
-from Brain.Utils.user_info import get_user_info
+
+
+def get_user_info(effective_user):
+    user = eval(str(effective_user))
+    return user
 
 
 def db():

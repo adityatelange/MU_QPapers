@@ -6,6 +6,7 @@ from telegram.chataction import ChatAction
 from telegram.error import BadRequest
 from telegram.ext.dispatcher import run_async
 
+from Brain.Modules.help import get_help
 from Brain.Utils import button_menu, qpaper_utils
 from Brain.Utils.dbfuncs import query_collect, command_collect
 from Brain.Utils.dbfuncs import user_collect, unavailable_collect
@@ -280,12 +281,8 @@ def get_qpapers(update, context):
     context.bot.send_chat_action(chat_id=chat.id, action=ChatAction.TYPING)
     # ONLY send help in PM
     if chat.type != chat.PRIVATE:
-        send_qpapers(update, "Contact me in PM to get the list of possible commands.", InlineKeyboardMarkup(
-            [[InlineKeyboardButton(text="Help",
-                                   url="t.me/{}?start=help".format(
-                                       context.bot.username))]]))
-        return
-
+        context.args = ['qpapers']
+        get_help(update, context)
     else:
         # called default
         button_list = []

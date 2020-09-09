@@ -19,6 +19,184 @@ qpapers_info_help = \
 HELPER_SCRIPTS['qpapers'] = qpapers_info_help
 
 
+def course(text):
+    button_list = []
+
+    course = ""
+    course_in = text[0]
+    for module, tag in COURSES_LIST.items():
+        if course_in == tag:
+            course = module
+
+    for branch, branch_code in BRANCHES_COURSE[course].items():
+        branch_full = branch
+        nextt = [course_in, branch_code]
+        button_list.append(
+            InlineKeyboardButton(
+                text="{}".format(branch_full),
+                callback_data="qa={}".format("+".join(nextt)), )
+        )
+    colm = 2
+    word = """Selected Course: `{}` \nSelect Branch :""".format(course)
+    return button_list, word, colm
+
+
+def course_branch(text):
+    button_list = []
+    colm = 2
+    course_full = branch_full = ''
+    course_in, branch_in = text
+    for module, tag in COURSES_LIST.items():
+        if course_in == tag:
+            course_full = module
+            break
+    for branchy, key in BRANCHES_COURSE[course_full].items():
+        if branch_in == key:
+            branch_full = branchy
+            break
+    word = """Selected Course: `{}` \nSelected Branch: `{}` \nSelect Sem :""". \
+        format(course_full, branch_full)
+
+    for sem in range(1, SEMS[course_full] + 1):
+        nextt = [course_in, branch_in, str(sem)]
+        button_list.append(
+            InlineKeyboardButton(
+                text="{}".format(sem),
+                callback_data="qa={}".format("+".join(nextt)),
+            )
+        )
+
+    # back_button data
+    back_data = "qa={}".format("+".join([course_in]))
+    return button_list, word, colm, back_data
+
+
+def course_branch_sem(text):
+    button_list = []
+    colm = 1
+    course_full = branch_full = ''
+    course_in, branch_in, sem_in = text
+    for module, tag in COURSES_LIST.items():
+        if course_in == tag:
+            course_full = module
+            break
+    for branch, key in BRANCHES_COURSE[course_full].items():
+        if branch_in == key:
+            branch_full = branch
+            break
+
+    word = """Selected Course: `{}` \nSelected Branch: `{}` \nSelected Sem: `{}` \nSelect Subject :""". \
+        format(course_full, branch_full, sem_in)
+
+    # we don't use 'papers' here just use subs
+    subs, papers = qpaper_utils.collect_subs_n_papers(course_full, branch_full, sem_in)
+
+    pre = [course_in, branch_in, sem_in]
+    if len(subs) == 0:
+        word += '\n _Unavailable_ \U0001F615'
+        query_log = {
+            'level': 3,
+            'course': course_full,
+            'branch': branch_full,
+            'semester': sem_in,
+            'subject': "",
+            'available': False
+        }
+        threading.Thread(target=unavailable_collect, args=(query_log,), daemon=True).start()
+    else:
+        for sub in subs:
+            sub_ = ''.join(sub.split(' '))
+            callback_str = "qa={}".format('+'.join(pre))
+            callback_str += "+" + sub_
+
+            if len(callback_str) > 64:
+                logger.error("".join(text) + "=>" + callback_str + "#" + str(len(callback_str)))
+                callback_str = callback_str[:64]
+                logger.info("serialized to =>" + callback_str)
+
+            button_list.append(
+                InlineKeyboardButton(
+                    text="{}".format(sub),
+                    callback_data=callback_str,
+                )
+            )
+
+    # back_button data
+    back_data = "qa={}".format("+".join([course_in, branch_in]))
+
+    return button_list, word, colm, back_data
+
+
+def course_branch_sem_sub(text):
+    button_list = []
+    colm = 1
+    course_in, branch_in, sem_in, sub_in = text
+    course_full = branch_full = ''
+
+    for module, tag in COURSES_LIST.items():
+        if course_in == tag:
+            course_full = module
+            break
+    for branch, key in BRANCHES_COURSE[course_full].items():
+        if branch_in == key:
+            branch_full = branch
+            break
+
+    subs, papers = qpaper_utils.collect_subs_n_papers(course_full, branch_full, sem_in)
+    is_avail = False
+    if len(subs) == 0:
+        word = '\n _Unavailable_ \U0001F615'
+        query_log = {
+            'level': 4,
+            'course': course_full,
+            'branch': branch_full,
+            'semester': sem_in,
+            'subject': sub_in,
+            'available': False
+        }
+
+        threading.Thread(target=unavailable_collect, args=(query_log,), daemon=True).start()
+    else:
+        sub_index = None
+        for sub in subs:
+            format_callback_sub = ''.join(sub.split(' '))[:53]
+            # print(repr(format_callback_sub) + " ================ " + repr(sub_in))
+
+            # https://stackoverflow.com/questions/17667923/remove-n-or-t-from-a-given-string
+
+            # removing \t \n \r when comparing
+            if re.sub('\s+', '', format_callback_sub) == re.sub('\s+', '', sub_in):
+                sub_index = subs.index(sub)
+                break
+
+        papers_for_sub = papers[sub_index].items()
+        for name, url in papers_for_sub:
+            button_list.append(
+                InlineKeyboardButton(
+                    text="{}".format(name),
+                    url=BASE_URL + url,
+                )
+            )
+
+        word = "Papers for \n`{}`".format(sub_in)
+        is_avail = True
+
+    query_log = {
+        'level': 4,
+        'course': course_full,
+        'branch': branch_full,
+        'semester': sem_in,
+        'subject': sub_in,
+        'available': is_avail
+    }
+    threading.Thread(target=query_collect, args=(query_log,), daemon=True).start()
+
+    # back_button data
+    back_data = "qa={}".format("+".join([course_in, branch_in, sem_in]))
+
+    return button_list, word, colm, back_data
+
+
 @run_async
 def qpapers_button(update, context):
     query = update.callback_query
@@ -35,170 +213,20 @@ def qpapers_button(update, context):
 
             if len(text) == 1:
                 # course selected => select branch
-                colm = 2
-                course = ""
-                course_in = text[0]
-                for module, tag in COURSES_LIST.items():
-                    if course_in == tag:
-                        course = module
-                word = """Selected Course: `{}` \nSelect Branch :""".format(course)
-
-                for branch, branch_code in BRANCHES_COURSE[course].items():
-                    branch_full = branch
-                    nextt = [course_in, branch_code]
-                    button_list.append(
-                        InlineKeyboardButton(
-                            text="{}".format(branch_full),
-                            callback_data="qa={}".format("+".join(nextt)), )
-                    )
+                button_list, word, colm = course(text)
 
             elif len(text) == 2:
                 # course, branch selected => select sem
-                colm = 2
-                course_full = branch_full = ''
-                course_in, branch_in = text
-                for module, tag in COURSES_LIST.items():
-                    if course_in == tag:
-                        course_full = module
-                        break
-                for branchy, key in BRANCHES_COURSE[course_full].items():
-                    if branch_in == key:
-                        branch_full = branchy
-                        break
-                word = """Selected Course: `{}` \nSelected Branch: `{}` \nSelect Sem :""". \
-                    format(course_full, branch_full)
-
-                for sem in range(1, SEMS[course_full] + 1):
-                    nextt = [course_in, branch_in, str(sem)]
-                    button_list.append(
-                        InlineKeyboardButton(
-                            text="{}".format(sem),
-                            callback_data="qa={}".format("+".join(nextt)),
-                        )
-                    )
-
-                # back_button data
-                back_data = "qa={}".format("+".join([course_in]))
+                button_list, word, colm, back_data = course_branch(text)
 
             elif len(text) == 3:
                 # course, branch, sem selected => select subject
-                colm = 1
-                course_full = branch_full = ''
-                course_in, branch_in, sem_in = text
-                for module, tag in COURSES_LIST.items():
-                    if course_in == tag:
-                        course_full = module
-                        break
-                for branch, key in BRANCHES_COURSE[course_full].items():
-                    if branch_in == key:
-                        branch_full = branch
-                        break
-
-                word = """Selected Course: `{}` \nSelected Branch: `{}` \nSelected Sem: `{}` \nSelect Subject :""". \
-                    format(course_full, branch_full, sem_in)
-
-                # we don't use 'papers' here just use subs
-                subs, papers = qpaper_utils.collect_subs_n_papers(course_full, branch_full, sem_in)
-
-                pre = [course_in, branch_in, sem_in]
-                if len(subs) == 0:
-                    word += '\n _Unavailable_ \U0001F615'
-                    query_log = {
-                        'level': 3,
-                        'course': course_full,
-                        'branch': branch_full,
-                        'semester': sem_in,
-                        'subject': "",
-                        'available': False
-                    }
-                    threading.Thread(target=unavailable_collect, args=(query_log,), daemon=True).start()
-                else:
-                    for sub in subs:
-                        sub_ = ''.join(sub.split(' '))
-                        callback_str = "qa={}".format('+'.join(pre))
-                        callback_str += "+" + sub_
-
-                        if len(callback_str) > 64:
-                            logger.error("".join(text) + "=>" + callback_str + "#" + str(len(callback_str)))
-                            callback_str = callback_str[:64]
-                            logger.info("serialized to =>" + callback_str)
-
-                        button_list.append(
-                            InlineKeyboardButton(
-                                text="{}".format(sub),
-                                callback_data=callback_str,
-                            )
-                        )
-
-                # back_button data
-                back_data = "qa={}".format("+".join([course_in, branch_in]))
+                button_list, word, colm, back_data = course_branch_sem(text)
 
             elif len(text) == 4:
                 # course, branch, sem, subject selected => send the links here
-                colm = 1
-                course_in, branch_in, sem_in, sub_in = text
-                course_full = branch_full = ''
+                button_list, word, colm, back_data = course_branch_sem_sub(text)
 
-                for module, tag in COURSES_LIST.items():
-                    if course_in == tag:
-                        course_full = module
-                        break
-                for branch, key in BRANCHES_COURSE[course_full].items():
-                    if branch_in == key:
-                        branch_full = branch
-                        break
-
-                subs, papers = qpaper_utils.collect_subs_n_papers(course_full, branch_full, sem_in)
-                is_avail = False
-                if len(subs) == 0:
-                    word = '\n _Unavailable_ \U0001F615'
-                    query_log = {
-                        'level': 4,
-                        'course': course_full,
-                        'branch': branch_full,
-                        'semester': sem_in,
-                        'subject': sub_in,
-                        'available': False
-                    }
-
-                    threading.Thread(target=unavailable_collect, args=(query_log,), daemon=True).start()
-                else:
-                    sub_index = None
-                    for sub in subs:
-                        format_callback_sub = ''.join(sub.split(' '))[:53]
-                        # print(repr(format_callback_sub) + " ================ " + repr(sub_in))
-
-                        # https://stackoverflow.com/questions/17667923/remove-n-or-t-from-a-given-string
-
-                        # removing \t \n \r when comparing
-                        if re.sub('\s+', '', format_callback_sub) == re.sub('\s+', '', sub_in):
-                            sub_index = subs.index(sub)
-                            break
-
-                    papers_for_sub = papers[sub_index].items()
-                    for name, url in papers_for_sub:
-                        button_list.append(
-                            InlineKeyboardButton(
-                                text="{}".format(name),
-                                url=BASE_URL + url,
-                            )
-                        )
-
-                    word = "Papers for \n`{}`".format(sub_in)
-                    is_avail = True
-
-                query_log = {
-                    'level': 4,
-                    'course': course_full,
-                    'branch': branch_full,
-                    'semester': sem_in,
-                    'subject': sub_in,
-                    'available': is_avail
-                }
-                threading.Thread(target=query_collect, args=(query_log,), daemon=True).start()
-
-                # back_button data
-                back_data = "qa={}".format("+".join([course_in, branch_in, sem_in]))
             else:
                 colm = 1
                 word = "Some Unknown Error\n Use /feedback to send feedback about this error)"

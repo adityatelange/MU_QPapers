@@ -66,17 +66,31 @@ def get_help(update, context):
 
     # ONLY send help in PM
     if chat.type != chat.PRIVATE:
-        send_help(
-            update,
-            "Contact me in PM to get the list of possible commands.",
-            InlineKeyboardMarkup(
-                [[
-                    InlineKeyboardButton(text="Help",
-                                         url="t.me/{}?start=help".format(
-                                             context.bot.username))
-                ]]
+        if len(context.args) >= 1 and any(context.args[0].lower() == x for x in HELPER_SCRIPTS):
+            module = context.args[0].lower()
+            send_help(
+                update,
+                "Contact me in PM to get the list of possible commands.",
+                InlineKeyboardMarkup(
+                    [[
+                        InlineKeyboardButton(text="Help",
+                                             url="t.me/{}?start={}".format(
+                                                 context.bot.username, module))
+                    ]]
+                )
             )
-        )
+        else:
+            send_help(
+                update,
+                "Contact me in PM to get the list of possible commands.",
+                InlineKeyboardMarkup(
+                    [[
+                        InlineKeyboardButton(text="Help",
+                                             url="t.me/{}?start=help".format(
+                                                 context.bot.username))
+                    ]]
+                )
+            )
         return
     elif len(context.args) >= 1 and any(context.args[0].lower() == x for x in HELPER_SCRIPTS):
         module = context.args[0].lower()

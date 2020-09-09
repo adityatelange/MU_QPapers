@@ -228,8 +228,9 @@ def qpapers_button(update, context):
                 button_list, word, colm, back_data = course_branch_sem_sub(text)
 
             else:
-                colm = 1
                 word = "Some Unknown Error\n Use /feedback to send feedback about this error)"
+                send_qpapers(update, text=word, keyboard=None)
+                return
 
             # adding back button for easy traversing
             footer_button = [InlineKeyboardButton(text="[Back]", callback_data=back_data)]

@@ -34,7 +34,7 @@ def user_collect(chat):
     new = {"$set": user}
 
     # if user exists update user object else create a new object
-    db_users.update_one(query, new, upsert=True)
+    db_users.update_many(query, new, upsert=True)
     logger.info("[+] USer collect {}".format(query))
 
 

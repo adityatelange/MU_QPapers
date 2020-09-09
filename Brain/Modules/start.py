@@ -26,6 +26,8 @@ def start(update, context):
                 get_help(update, context)
             elif context.args[0].lower() == "qpapers":
                 get_help(update, context)
+            elif context.args[0].lower() == "feedback":
+                get_help(update, context)
         else:
             first_name = update.effective_user.first_name
             reply = PM_START_TEXT.format(

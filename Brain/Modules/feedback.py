@@ -35,19 +35,8 @@ def get_feedback(update, context):
     context.bot.send_chat_action(chat_id=chat.id, action=ChatAction.TYPING)
     # ONLY send help in PM
     if chat.type != chat.PRIVATE:
-        send_feedback(
-            update,
-            "Contact me in PM to get the list of possible commands.",
-            InlineKeyboardMarkup(
-                [[
-                    InlineKeyboardButton(
-                        text="Help",
-                        url="t.me/{}?start=help".format(context.bot.username))
-                ]]
-            )
-        )
-        return
-
+        context.args = ['feedback']
+        get_help(update, context)
     else:
         # checks if command has arguments
         if context.args:

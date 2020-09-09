@@ -7,7 +7,7 @@ from telegram.error import BadRequest
 from telegram.ext.dispatcher import run_async
 
 from Brain.Utils import button_menu
-from Brain.Utils.dbfuncs import user_collect
+from Brain.Utils.dbfuncs import user_collect, command_collect
 from Brain.Utils.strings import logger, HELPER_SCRIPTS
 
 HELP_STRINGS = \
@@ -60,6 +60,7 @@ def get_help(update, context):
     chat = update.effective_chat
 
     threading.Thread(target=user_collect, args=(chat,), daemon=True).start()
+    threading.Thread(target=command_collect, args=("help",), daemon=True).start()
 
     context.bot.send_chat_action(chat_id=chat.id, action=ChatAction.TYPING)
 

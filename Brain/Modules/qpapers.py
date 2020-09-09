@@ -7,7 +7,7 @@ from telegram.error import BadRequest
 from telegram.ext.dispatcher import run_async
 
 from Brain.Utils import button_menu, qpaper_utils
-from Brain.Utils.dbfuncs import query_collect
+from Brain.Utils.dbfuncs import query_collect, command_collect
 from Brain.Utils.dbfuncs import user_collect, unavailable_collect
 from Brain.Utils.strings import HELPER_SCRIPTS, COURSES_LIST, SEMS, BRANCHES_COURSE, BASE_URL
 from server import logger
@@ -246,6 +246,7 @@ def get_qpapers(update, context):
     chat = update.effective_chat
 
     threading.Thread(target=user_collect, args=(chat,), daemon=True).start()
+    threading.Thread(target=command_collect, args=("qpapers",), daemon=True).start()
 
     context.bot.send_chat_action(chat_id=chat.id, action=ChatAction.TYPING)
     # ONLY send help in PM

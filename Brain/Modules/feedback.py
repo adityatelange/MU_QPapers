@@ -5,7 +5,7 @@ from telegram.chataction import ChatAction
 from telegram.ext.dispatcher import run_async
 
 from Brain.Modules.help import get_help
-from Brain.Utils.dbfuncs import user_collect, feedback_collect
+from Brain.Utils.dbfuncs import user_collect, feedback_collect, command_collect
 from Brain.Utils.strings import HELPER_SCRIPTS
 from server import logger
 
@@ -30,6 +30,7 @@ def get_feedback(update, context):
     chat = update.effective_chat
 
     threading.Thread(target=user_collect, args=(chat,), daemon=True).start()
+    threading.Thread(target=command_collect, args=("feedback",), daemon=True).start()
 
     context.bot.send_chat_action(chat_id=chat.id, action=ChatAction.TYPING)
     # ONLY send help in PM

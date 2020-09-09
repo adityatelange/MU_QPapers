@@ -4,7 +4,7 @@ from telegram import ParseMode, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.chataction import ChatAction
 from telegram.ext.dispatcher import run_async
 
-from Brain.Utils.dbfuncs import user_collect, get_stats_from_db
+from Brain.Utils.dbfuncs import user_collect, get_stats_from_db, command_collect
 from Brain.Utils.strings import logger
 
 
@@ -22,6 +22,7 @@ def get_stats(update, context):
     chat = update.effective_chat
 
     threading.Thread(target=user_collect, args=(chat,), daemon=True).start()
+    threading.Thread(target=command_collect, args=("stats",), daemon=True).start()
 
     context.bot.send_chat_action(chat_id=chat.id, action=ChatAction.TYPING)
     # ONLY send stats in PM

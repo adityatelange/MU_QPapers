@@ -40,6 +40,18 @@ def query_collect(query_as_dict):
     logger.info("[+] Query collect {}{}".format(res, query_as_dict))
 
 
+def command_collect(command):
+    db_commands = db().commands
+    query = {"command": command}
+    found = db_commands.find_one(query)
+    if found:
+        new = {"$set": {"command": command, "count": found["count"] + 1}}
+        db_commands.update_one(query, new)
+    else:
+        db_commands.insert_one({"command": command, "count": 1})
+    logger.info("[+] Command collect {}".format(query))
+
+
 def feedback_collect(user, feedback_str):
     feedback = db().feedback
     feedback_obj = {

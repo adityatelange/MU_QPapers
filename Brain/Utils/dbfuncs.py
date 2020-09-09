@@ -31,7 +31,7 @@ def user_collect(chat):
     db_users = db().users
 
     query = {"id": user['id']}
-    new = {"$set": user}
+    new = {"$set": user, "$unset": {"blocked": True}}
 
     # if user exists update user object else create a new object
     db_users.update_many(query, new, upsert=True)

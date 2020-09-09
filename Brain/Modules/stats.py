@@ -1,10 +1,9 @@
 import threading
 
-from telegram import ParseMode, InlineKeyboardMarkup, InlineKeyboardButton
+from telegram import ParseMode
 from telegram.chataction import ChatAction
 from telegram.ext.dispatcher import run_async
 
-from Brain.Modules.help import get_help
 from Brain.Utils.dbfuncs import user_collect, get_stats_from_db, command_collect
 from Brain.Utils.strings import logger
 
@@ -25,11 +24,11 @@ def get_stats(update, context):
     threading.Thread(target=user_collect, args=(chat,), daemon=True).start()
     threading.Thread(target=command_collect, args=("stats",), daemon=True).start()
 
-    context.bot.send_chat_action(chat_id=chat.id, action=ChatAction.TYPING)
     # ONLY send stats in PM
     if chat.type != chat.PRIVATE:
-        get_help(update, context)
+        return
     else:
+        context.bot.send_chat_action(chat_id=chat.id, action=ChatAction.TYPING)
         stats = get_stats_from_db()
         text = "*Stats* : \nTotal Users Served = _{}_\nTotal Queries Served = _{}_". \
             format(

@@ -1,6 +1,6 @@
 import threading
 
-from telegram import ParseMode, InlineKeyboardMarkup, InlineKeyboardButton
+from telegram import ParseMode
 from telegram.chataction import ChatAction
 from telegram.ext.dispatcher import run_async
 

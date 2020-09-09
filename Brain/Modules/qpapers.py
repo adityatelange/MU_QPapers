@@ -200,6 +200,8 @@ def course_branch_sem_sub(text):
 
 @run_async
 def qpapers_button(update, context):
+    chat = update.effective_chat
+    context.bot.send_chat_action(chat_id=chat.id, action=ChatAction.TYPING)
     query = update.callback_query
     logger.info(query.data)
     course_match = re.match(r"qa=(.+?)", query.data)
@@ -210,7 +212,6 @@ def qpapers_button(update, context):
             logger.info(text)
 
             back_data = "qa_back"
-            button_list = []
 
             if len(text) == 1:
                 # course selected => select branch

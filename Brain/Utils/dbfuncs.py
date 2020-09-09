@@ -52,7 +52,8 @@ def command_collect(command):
     logger.info("[+] Command collect {}".format(query))
 
 
-def feedback_collect(user, feedback_str):
+def feedback_collect(chat, feedback_str):
+    user = get_user_info(chat)
     feedback = db().feedback
     feedback_obj = {
         'user': user,

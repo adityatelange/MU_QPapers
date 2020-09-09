@@ -53,7 +53,7 @@ def get_feedback(update, context):
         if context.args:
             feedback = " ".join(context.args)
             try:
-                feedback_collect(user, feedback)
+                feedback_collect(chat, feedback)
                 msg = "ThankYou for Feedback \U0001F4E9"
                 send_feedback(
                     update=update,

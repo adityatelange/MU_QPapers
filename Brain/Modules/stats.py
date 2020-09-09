@@ -46,5 +46,5 @@ def get_stats(update, context):
             format(
                 stats['user_count'],
                 stats['queries_count']
-        )
+            )
         send_stats(update=update, text=text, )

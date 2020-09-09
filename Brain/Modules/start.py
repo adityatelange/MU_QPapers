@@ -18,7 +18,9 @@ def start(update, context):
 
     context.bot.send_chat_action(chat_id=update.effective_chat.id, action=ChatAction.TYPING)
 
-    if chat.type == "private":
+    if chat.type != "private":
+        update.effective_message.reply_text("Hey, {}!".format(escape_markdown(update.effective_user.first_name)))
+    else:
         if len(context.args) >= 1:
             if context.args[0].lower() == "help":
                 get_help(update, context)
@@ -32,6 +34,3 @@ def start(update, context):
                 reply,
                 parse_mode=ParseMode.MARKDOWN
             )
-
-    else:
-        update.effective_message.reply_text("Hey, {}!".format(escape_markdown(update.effective_user.first_name)))

@@ -1,6 +1,6 @@
 import threading
 
-from telegram.ext import (CommandHandler, Updater, CallbackQueryHandler)
+from telegram.ext import (CommandHandler, Updater, CallbackQueryHandler, MessageHandler, Filters)
 import os
 import sys
 from Brain.Utils.strings import logger
@@ -10,6 +10,7 @@ import Brain.Modules.help
 import Brain.Modules.qpapers
 import Brain.Modules.stats
 import Brain.Modules.feedback
+import Brain.Modules.text
 from Brain.Utils.logger import initialize_logger
 
 
@@ -39,6 +40,7 @@ class Main:
         qpapers_handler = CommandHandler(command="qpapers", callback=Brain.Modules.qpapers.get_qpapers)
         stats_handler = CommandHandler(command="stats", callback=Brain.Modules.stats.get_stats)
         feeback_handler = CommandHandler(command="feedback", callback=Brain.Modules.feedback.get_feedback)
+        text_handler = MessageHandler(Filters.text & (~Filters.command), callback=Brain.Modules.text.text_handler)
 
         # callback handlers
         help_callback_handler = CallbackQueryHandler(callback=Brain.Modules.help.help_button, pattern=r"help_", )
@@ -52,6 +54,7 @@ class Main:
         self.dispatcher.add_handler(help_callback_handler)
         self.dispatcher.add_handler(qpapers_handler)
         self.dispatcher.add_handler(qpapers_callback_handler)
+        self.dispatcher.add_handler(text_handler)
 
     def run(self):
         if self.mode == "dev":

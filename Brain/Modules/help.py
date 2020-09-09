@@ -73,7 +73,7 @@ def get_help(update, context):
                 "Contact me in PM to get the list of possible commands.",
                 InlineKeyboardMarkup(
                     [[
-                        InlineKeyboardButton(text="Help",
+                        InlineKeyboardButton(text="Help for {}".format(module),
                                              url="t.me/{}?start={}".format(
                                                  context.bot.username, module))
                     ]]

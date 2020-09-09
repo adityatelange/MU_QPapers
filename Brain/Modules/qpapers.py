@@ -9,7 +9,7 @@ from telegram.ext.dispatcher import run_async
 from Brain.Modules.help import get_help
 from Brain.Utils import button_menu, qpaper_utils
 from Brain.Utils.dbfuncs import query_collect, command_collect
-from Brain.Utils.dbfuncs import user_collect, unavailable_collect
+from Brain.Utils.dbfuncs import user_collect
 from Brain.Utils.strings import HELPER_SCRIPTS, COURSES_LIST, SEMS, BRANCHES_COURSE, BASE_URL
 from server import logger
 
@@ -103,7 +103,7 @@ def course_branch_sem(text):
             'subject': "",
             'available': False
         }
-        threading.Thread(target=unavailable_collect, args=(query_log,), daemon=True).start()
+        threading.Thread(target=query_collect, args=(query_log,), daemon=True).start()
     else:
         for sub in subs:
             sub_ = ''.join(sub.split(' '))
@@ -156,7 +156,7 @@ def course_branch_sem_sub(text):
             'available': False
         }
 
-        threading.Thread(target=unavailable_collect, args=(query_log,), daemon=True).start()
+        threading.Thread(target=query_collect, args=(query_log,), daemon=True).start()
     else:
         sub_index = None
         for sub in subs:

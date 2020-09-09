@@ -12,11 +12,12 @@ I'm a MU Student Assistant bot ."""
 
 
 def start(update, context):
+    chat = update.effective_chat
+
+    threading.Thread(target=user_collect, args=(chat,), daemon=True).start()
     context.bot.send_chat_action(chat_id=update.effective_chat.id, action=ChatAction.TYPING)
 
-    threading.Thread(target=user_collect, args=(get_user_info(update.effective_chat),), daemon=True).start()
-
-    if update.effective_chat.type == "private":
+    if chat.type == "private":
         if len(context.args) >= 1:
             if context.args[0].lower() == "help":
                 get_help(update, context)

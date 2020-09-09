@@ -4,6 +4,7 @@ import sys
 import pymongo
 
 from Brain.Utils.strings import logger
+from Brain.Utils.user_info import get_user_info
 
 
 def db():
@@ -21,17 +22,16 @@ def db():
     return db
 
 
-def user_collect(user):
-    users = db().users
+def user_collect(chat):
+    user = get_user_info(chat)
+    db_users = db().users
 
-    if users.find_one(user):
-        logger.info("[+] User exists")
-        pass
-    else:
-        post_user = user
+    query = {"id": user['id']}
+    new = {"$set": user}
 
-        res = users.insert_one(post_user)
-        logger.info("[+] User add {}".format(res))
+    # if user exists update user object else create a new object
+    db_users.update_one(query, new, upsert=True)
+    logger.info("[+] USer collect {}".format(query))
 
 
 def query_collect(query_as_dict):

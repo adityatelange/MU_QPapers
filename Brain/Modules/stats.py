@@ -6,7 +6,6 @@ from telegram.ext.dispatcher import run_async
 
 from Brain.Utils.dbfuncs import user_collect, get_stats_from_db
 from Brain.Utils.strings import logger
-from Brain.Utils.user_info import get_user_info
 
 
 # do not async
@@ -22,7 +21,7 @@ def get_stats(update, context):
     logger.info("into get_stats")
     chat = update.effective_chat
 
-    threading.Thread(target=user_collect, args=(get_user_info(update.effective_chat),), daemon=True).start()
+    threading.Thread(target=user_collect, args=(chat,), daemon=True).start()
 
     context.bot.send_chat_action(chat_id=chat.id, action=ChatAction.TYPING)
     # ONLY send stats in PM

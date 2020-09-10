@@ -30,9 +30,11 @@ def get_stats(update, context):
     else:
         context.bot.send_chat_action(chat_id=chat.id, action=ChatAction.TYPING)
         stats = get_stats_from_db()
-        text = "*Stats* : \nTotal Users Served = _{}_\nTotal Queries Served = _{}_". \
+        text = "*Stats* : \nActive Users = _{}/{}_\nQueries Served = _{}/{}_". \
             format(
-                stats['user_count'],
-                stats['queries_count']
+                stats['users']['active_users'],
+                stats['users']['total_users'],
+                stats['queries']['successful_queries'],
+                stats['queries']['total_queries']
             )
         send_stats(update=update, text=text, )

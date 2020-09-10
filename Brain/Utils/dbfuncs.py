@@ -74,10 +74,20 @@ def unavailable_collect(query_as_dict):
 
 
 def get_stats_from_db():
-    users = db().users.find({"blocked:": {"$ne": True}}).count()
-    queries = db().queries.find({"available": True}).count()
+    logger.info("[^] DB Stats")
+    total_users = db().users.find().count()
+    active_users = db().users.find({"blocked": {"$ne": True}}).count()
+
+    total_queries = db().queries.find().count()
+    successful_queries = db().queries.find({"available": True}).count()
     stats = {
-        'user_count': users,
-        'queries_count': queries
+        'users': {
+            'total_users': total_users,
+            'active_users': active_users,
+        },
+        'queries': {
+            'total_queries': total_queries,
+            'successful_queries': successful_queries
+        }
     }
     return stats

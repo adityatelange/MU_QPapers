@@ -1,0 +1,47 @@
+# This workflow will build and publish it to IBM Cloud Foundry
+
+name: Build and Deploy to IBM Cloud Foundry.
+
+on:
+  schedule:
+    # At 00:00 on Sunday.
+    - cron: 0 0 * * 0
+  workflow_dispatch:
+    # manual
+
+# Environment variables available to all jobs and steps in this workflow
+env:
+  IBM_CLOUD_API_KEY: ${{ secrets.IBM_CLOUD_API_KEY }}
+  IBM_CLOUD_REGION: ${{ secrets.IBM_CLOUD_REGION }}
+  IBM_CLOUD_ORGANIZATION: ${{ secrets.IBM_CLOUD_ORGANIZATION }}
+  IBM_CLOUD_SPACE: ${{ secrets.IBM_CLOUD_SPACE }}
+
+jobs:
+  setup-build-publish-deploy:
+    name: Setup, Build, Publish, and Deploy
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        ref: master
+
+    # Download and Install IBM Cloud CLI
+    - name: Install IBM Cloud CLI
+      run: |
+        curl -sL https://ibm.biz/idt-installer | bash
+        ibmcloud --version
+        ibmcloud config --check-version=false
+
+    # Authenticate with IBM Cloud CLI
+    - name: Authenticate with IBM Cloud CLI
+      run: |
+        ibmcloud login -q --apikey "${IBM_CLOUD_API_KEY}" -r "${IBM_CLOUD_REGION}" -g Default
+        ibmcloud target -q -o "${IBM_CLOUD_ORGANIZATION}" -s "${IBM_CLOUD_SPACE}"
+        ibmcloud cf install -q
+
+    # Deploy to IBM Cloud Foundry
+    - name: Deploy to CF
+      run: |
+        ibmcloud cf push -q

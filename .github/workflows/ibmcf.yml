@@ -37,9 +37,9 @@ jobs:
     # Authenticate with IBM Cloud CLI
     - name: Authenticate with IBM Cloud CLI
       run: |
-        ibmcloud login -q --apikey "${IBM_CLOUD_API_KEY}" -r "${IBM_CLOUD_REGION}" -g Default
-        ibmcloud target -q -o "${IBM_CLOUD_ORGANIZATION}" -s "${IBM_CLOUD_SPACE}"
-        ibmcloud cf install -q
+        ibmcloud login -q --apikey "${IBM_CLOUD_API_KEY}" -r "${IBM_CLOUD_REGION}" -g Default  > /dev/null 2>&1
+        ibmcloud target -q -o "${IBM_CLOUD_ORGANIZATION}" -s "${IBM_CLOUD_SPACE}"  > /dev/null 2>&1
+        ibmcloud cf install -q  > /dev/null 2>&1
 
     # Deploy to IBM Cloud Foundry
     - name: Deploy to CF

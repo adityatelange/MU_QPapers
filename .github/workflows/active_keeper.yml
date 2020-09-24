@@ -1,0 +1,44 @@
+# This workflow will build and publish it to IBM Cloud Foundry
+
+name: Active keeper
+
+on:
+  schedule:
+    # At 00:00 on day-of-month 1.
+    - cron: 0 0 1 * *
+  workflow_dispatch:
+    # manual
+
+# Environment variables available to all jobs and steps in this workflow
+env:
+  MONGOUSER: ${{ secrets.MONGOUSER }}
+  MONGOPASS: ${{ secrets.MONGOPASS }}
+  MONGOURL: ${{ secrets.MONGOURL }}
+  MONGODBNAME: ${{ secrets.MONGODBNAME }}
+  TOKEN: ${{ secrets.TOKEN }}
+  OWNER_ID: ${{ secrets.OWNER_ID }}
+
+jobs:
+  execute:
+    name: Active keeper
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        ref: master
+
+    - name: setup python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8 #install the python needed
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pymongo telepot dnspython
+
+    - name: Run Script
+      run: |
+        python Brain/Utils/active_keeper.py
